@@ -51,7 +51,7 @@ void app_main(void){
         uart_read_bytes(UART_PORT_NUM, encoder_data, BUF_SIZE, 20 / portTICK_RATE_MS);
         printf("Encoder=%p\n", encoder_data);
         // Initialize data
-        int len = snprintf(buf,50,"v1 %f\n", 0.1);
+        int len = snprintf(buf,50,"v1 %f %f\n", 0.1, 0.0);
         // Write data to the UART
         uart_write_bytes(UART_PORT_NUM, buf, len);
 
