@@ -43,6 +43,17 @@ void app_main(void){
     ESP_ERROR_CHECK(uart_param_config(UART_PORT_NUM, &uart_config));
     ESP_ERROR_CHECK(uart_set_pin(UART_PORT_NUM, TXD, RXD, RTS, CTS));
 
+    char buf1[50];
+    char buf2[50];
+    // Initialize data
+    int len1 = snprintf(buf1,50,"w axis0 .controller.config.vel_limit %f\n", 10.0);
+    // Write data to the UART
+    uart_write_bytes(UART_PORT_NUM, buf1, len1);
+    // Initialize data
+    int len2 = snprintf(buf2,50,"w axis0 .motor.config.current_lim %f\n", 11.0);
+    // Write data to the UART
+    uart_write_bytes(UART_PORT_NUM, buf2, len2);
+
     char buf[50];
     uint8_t* encoder_data=0;
 
@@ -51,7 +62,7 @@ void app_main(void){
         uart_read_bytes(UART_PORT_NUM, encoder_data, BUF_SIZE, 20 / portTICK_RATE_MS);
         printf("Encoder=%p\n", encoder_data);
         // Initialize data
-        int len = snprintf(buf,50,"v1 %f %f\n", 0.1, 0.0);
+        int len = snprintf(buf,50,"v0 %f %f\n", 0.1, 0.0);
         // Write data to the UART
         uart_write_bytes(UART_PORT_NUM, buf, len);
 
