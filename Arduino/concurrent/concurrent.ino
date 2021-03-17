@@ -81,11 +81,12 @@ void Drive (void *pvParameters)
     int adc_reading2 = analogRead(A1);
 
     //Drive math
-    float x = (float) adc_reading1;
-    float y = (float) adc_reading2;
+    float x = (float) adc_reading1 - 511;
+    float y = (float) adc_reading2 - 511;
     float r = sqrt(x * x + y * y);    //distance formula
     float theta = atan(y / x);        //angle formula
-    float r_conv = 0.500 / r;         //convert into fraction of max
+    //Max r= 722 & max speed= 1
+    float r_conv = 1.00*r/722.66;     //convert into fraction of max
     float theta_conv = 1.000 / theta; //convert into fraction of max
     //Serial.println(r_conv);
     //Serial.println(theta_conv);
@@ -94,9 +95,9 @@ void Drive (void *pvParameters)
     //calculate how much the pivot motor has to moverelative to current position 
     float last_theta = current_theta; 
     float current_theta = theta_conv;
-    float movement = current_theta - last_theta;
+    float angle = current_theta - last_theta;
 
-    odrive.SetPosition(0, movement);
+    odrive.SetPosition(0, angle);
     odrive.SetVelocity(1, r_conv);
 
     //Put in delay so other task is executed
